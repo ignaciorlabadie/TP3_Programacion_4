@@ -1,0 +1,718 @@
+{
+  "info": {
+    "_postman_id": "8fefa494-7134-4481-b8f4-5898a7fad365",
+    "name": "Cafeteria_Origen",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55293974",
+    "_collection_link": "https://go.postman.co/collection/55293974-8fefa494-7134-4481-b8f4-5898a7fad365?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GET ALL productos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http:/localhost:3000/productos",
+          "host": [
+            "http"
+          ],
+          "port": "",
+          "path": [
+            "localhost:3000",
+            "productos"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "GET ALL productos",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http:/localhost:3000/productos",
+              "host": [
+                "http"
+              ],
+              "port": "",
+              "path": [
+                "localhost:3000",
+                "productos"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-powered-by",
+              "value": "Express"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "content-length",
+              "value": "1556"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"614-6gJoNjLA/pOSprkUIOZ76hqwtuo\""
+            },
+            {
+              "key": "date",
+              "value": "Sun, 18 Oct 2026 14:34:36 GMT"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "[\n  {\n    \"id\": 1,\n    \"nombre\": \"Expreso Pocillo Brasil\",\n    \"precioBase\": 2500,\n    \"precio\": 5020\n  },\n  {\n    \"id\": 2,\n    \"nombre\": \"Expreso Pocillo Colombia\",\n    \"precioBase\": 2500,\n    \"precio\": 5740\n  },\n  {\n    \"id\": 3,\n    \"nombre\": \"Expreso Pocillo Etiopia\",\n    \"precioBase\": 2500,\n    \"precio\": 6820\n  },\n  {\n    \"id\": 4,\n    \"nombre\": \"Expreso Mediano Brasil\",\n    \"precioBase\": 2500,\n    \"precio\": 6280\n  },\n  {\n    \"id\": 5,\n    \"nombre\": \"Expreso Mediano Colombia\",\n    \"precioBase\": 2500,\n    \"precio\": 7360\n  },\n  {\n    \"id\": 6,\n    \"nombre\": \"Expreso Mediano Etiopia\",\n    \"precioBase\": 2500,\n    \"precio\": 8980\n  },\n  {\n    \"id\": 7,\n    \"nombre\": \"Expreso Taza grande Brasil\",\n    \"precioBase\": 2500,\n    \"precio\": 7540\n  },\n  {\n    \"id\": 8,\n    \"nombre\": \"Expreso Taza grande Colombia\",\n    \"precioBase\": 2500,\n    \"precio\": 8980\n  },\n  {\n    \"id\": 9,\n    \"nombre\": \"Expreso Taza grande Etiopia\",\n    \"precioBase\": 2500,\n    \"precio\": 11140\n  },\n  {\n    \"id\": 10,\n    \"nombre\": \"Filtrado Pocillo Brasil\",\n    \"precioBase\": 3200,\n    \"precio\": 4040\n  },\n  {\n    \"id\": 11,\n    \"nombre\": \"Filtrado Pocillo Colombia\",\n    \"precioBase\": 3200,\n    \"precio\": 4280\n  },\n  {\n    \"id\": 12,\n    \"nombre\": \"Filtrado Pocillo Etiopia\",\n    \"precioBase\": 3200,\n    \"precio\": 4640\n  },\n  {\n    \"id\": 13,\n    \"nombre\": \"Filtrado Mediano Brasil\",\n    \"precioBase\": 3200,\n    \"precio\": 5300\n  },\n  {\n    \"id\": 14,\n    \"nombre\": \"Filtrado Mediano Colombia\",\n    \"precioBase\": 3200,\n    \"precio\": 5900\n  },\n  {\n    \"id\": 15,\n    \"nombre\": \"Filtrado Mediano Etiopia\",\n    \"precioBase\": 3200,\n    \"precio\": 6800\n  },\n  {\n    \"id\": 16,\n    \"nombre\": \"Filtrado Taza grande Brasil\",\n    \"precioBase\": 3200,\n    \"precio\": 6700\n  },\n  {\n    \"id\": 17,\n    \"nombre\": \"Filtrado Taza grande Colombia\",\n    \"precioBase\": 3200,\n    \"precio\": 7700\n  },\n  {\n    \"id\": 18,\n    \"nombre\": \"Filtrado Taza grande Etiopia\",\n    \"precioBase\": 3200,\n    \"precio\": 9200\n  },\n  {\n    \"id\": 19,\n    \"nombre\": \"Muffin de chocolate\",\n    \"precioBase\": 2500,\n    \"precio\": 2500\n  },\n  {\n    \"id\": 20,\n    \"nombre\": \"Torta selva negra\",\n    \"precioBase\": 4200,\n    \"precio\": 4200\n  }\n]"
+        }
+      ]
+    },
+    {
+      "name": "GET BY ID productos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http:/localhost:3000/productos/2",
+          "host": [
+            "http"
+          ],
+          "port": "",
+          "path": [
+            "localhost:3000",
+            "productos",
+            "2"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "GET BY ID productos - 200 OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http:/localhost:3000/productos/2",
+              "host": [
+                "http"
+              ],
+              "port": "",
+              "path": [
+                "localhost:3000",
+                "productos",
+                "2"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-powered-by",
+              "value": "Express"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "content-length",
+              "value": "76"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"4c-lblsAcCwJtrO6BWwHOd7Luv5Tnc\""
+            },
+            {
+              "key": "date",
+              "value": "Sun, 18 Oct 2026 14:35:28 GMT"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"id\": 2,\n  \"nombre\": \"Expreso Pocillo Colombia\",\n  \"precioBase\": 2500,\n  \"precio\": 5740\n}"
+        },
+        {
+          "name": "GET BY ID productos - 404",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http:/localhost:3000/productos/999",
+              "host": [
+                "http"
+              ],
+              "port": "",
+              "path": [
+                "localhost:3000",
+                "productos",
+                "999"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-powered-by",
+              "value": "Express"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "content-length",
+              "value": "34"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"22-DoT5ybwMKaDFCElYot58nmw2dVs\""
+            },
+            {
+              "key": "date",
+              "value": "Sun, 18 Oct 2026 14:35:44 GMT"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"error\": \"Producto no encontrado\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "POST pedido",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"items\": [{\r\n        \"productoId\": 1,\r\n        \"cantidad\": 1\r\n    }]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http:/localhost:3000/pedidos",
+          "host": [
+            "http"
+          ],
+          "port": "",
+          "path": [
+            "localhost:3000",
+            "pedidos"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "POST pedido - 201",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"items\": [{\r\n        \"productoId\": 1,\r\n        \"cantidad\": 1\r\n    }]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http:/localhost:3000/pedidos",
+              "host": [
+                "http"
+              ],
+              "port": "",
+              "path": [
+                "localhost:3000",
+                "pedidos"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-powered-by",
+              "value": "Express"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "content-length",
+              "value": "82"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"52-+dlnNwS5XQt3O0l7+izVz+tTiRs\""
+            },
+            {
+              "key": "date",
+              "value": "Sun, 18 Oct 2026 14:39:16 GMT"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"id\": 1,\n  \"items\": [\n    {\n      \"productoId\": 1,\n      \"cantidad\": 1\n    }\n  ],\n  \"estado\": \"pendiente\",\n  \"total\": 5020\n}"
+        },
+        {
+          "name": "POST pedido - 400",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"items\": [{\r\n        \"productoId\": 999,\r\n        \"cantidad\": 1\r\n    }]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http:/localhost:3000/pedidos",
+              "host": [
+                "http"
+              ],
+              "port": "",
+              "path": [
+                "localhost:3000",
+                "pedidos"
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-powered-by",
+              "value": "Express"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "content-length",
+              "value": "34"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"22-DoT5ybwMKaDFCElYot58nmw2dVs\""
+            },
+            {
+              "key": "date",
+              "value": "Sun, 18 Oct 2026 14:40:45 GMT"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"error\": \"Producto no encontrado\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "GET pedidos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http:/localhost:3000/pedidos",
+          "host": [
+            "http"
+          ],
+          "port": "",
+          "path": [
+            "localhost:3000",
+            "pedidos"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "GET pedidos - 200",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http:/localhost:3000/pedidos",
+              "host": [
+                "http"
+              ],
+              "port": "",
+              "path": [
+                "localhost:3000",
+                "pedidos"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-powered-by",
+              "value": "Express"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "content-length",
+              "value": "84"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"54-GGEpNx/rhc8caE1vNc8cNMKzgkM\""
+            },
+            {
+              "key": "date",
+              "value": "Sun, 18 Oct 2026 14:41:16 GMT"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "[\n  {\n    \"id\": 1,\n    \"items\": [\n      {\n        \"productoId\": 1,\n        \"cantidad\": 1\n      }\n    ],\n    \"estado\": \"pendiente\",\n    \"total\": 5020\n  }\n]"
+        }
+      ]
+    },
+    {
+      "name": "GET BY ID pedidos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http:/localhost:3000/pedidos/15",
+          "host": [
+            "http"
+          ],
+          "port": "",
+          "path": [
+            "localhost:3000",
+            "pedidos",
+            "15"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "GET BY ID pedidos - 200",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http:/localhost:3000/pedidos/1",
+              "host": [
+                "http"
+              ],
+              "port": "",
+              "path": [
+                "localhost:3000",
+                "pedidos",
+                "1"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-powered-by",
+              "value": "Express"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "content-length",
+              "value": "82"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"52-+dlnNwS5XQt3O0l7+izVz+tTiRs\""
+            },
+            {
+              "key": "date",
+              "value": "Sun, 18 Oct 2026 14:42:07 GMT"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"id\": 1,\n  \"items\": [\n    {\n      \"productoId\": 1,\n      \"cantidad\": 1\n    }\n  ],\n  \"estado\": \"pendiente\",\n  \"total\": 5020\n}"
+        },
+        {
+          "name": "GET BY ID pedidos - 404",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http:/localhost:3000/pedidos/15",
+              "host": [
+                "http"
+              ],
+              "port": "",
+              "path": [
+                "localhost:3000",
+                "pedidos",
+                "15"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-powered-by",
+              "value": "Express"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "content-length",
+              "value": "32"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"20-ajb5CCgiBWpBV6gp/tj1n2nU7AA\""
+            },
+            {
+              "key": "date",
+              "value": "Sun, 18 Oct 2026 14:42:27 GMT"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"error\": \"Pedido no encontrado\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "GET reportes/facturacion",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http:/localhost:3000/reportes/facturacion",
+          "host": [
+            "http"
+          ],
+          "port": "",
+          "path": [
+            "localhost:3000",
+            "reportes",
+            "facturacion"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "GET reportes/facturacion - 200",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http:/localhost:3000/reportes/facturacion",
+              "host": [
+                "http"
+              ],
+              "port": "",
+              "path": [
+                "localhost:3000",
+                "reportes",
+                "facturacion"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-powered-by",
+              "value": "Express"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "content-length",
+              "value": "26"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"1a-3Vpru371+Ds9S8OWmVYmrfohH84\""
+            },
+            {
+              "key": "date",
+              "value": "Sun, 18 Oct 2026 14:43:57 GMT"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"facturacionTotal\": 73180\n}"
+        }
+      ]
+    },
+    {
+      "name": "GET reportes/mas-vendido",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http:/localhost:3000/reportes/mas-vendido",
+          "host": [
+            "http"
+          ],
+          "port": "",
+          "path": [
+            "localhost:3000",
+            "reportes",
+            "mas-vendido"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "GET reportes/mas-vendido - 200",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http:/localhost:3000/reportes/mas-vendido",
+              "host": [
+                "http"
+              ],
+              "port": "",
+              "path": [
+                "localhost:3000",
+                "reportes",
+                "mas-vendido"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-powered-by",
+              "value": "Express"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "content-length",
+              "value": "48"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"30-i7X5cXSfNs2EQd0MZ8QSMZM+hx0\""
+            },
+            {
+              "key": "date",
+              "value": "Sun, 18 Oct 2026 14:45:38 GMT"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"nombre\": \"Expreso Pocillo Brasil\",\n  \"cantidad\": 6\n}"
+        }
+      ]
+    }
+  ]
+}
