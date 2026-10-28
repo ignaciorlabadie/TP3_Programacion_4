@@ -9,14 +9,15 @@ describe("GET /productos", () => {
     expect(res.body).toHaveLength(20);
   });
 
-  it("cada producto trae id, nombre y precio calculado", async () => {
+  it("cada producto trae id, nombre y precio calculado, sin precioBase", async () => {
     const res = await request(app).get("/productos");
     expect(res.body[0]).toMatchObject({
       id: 1,
       nombre: "Expreso Pocillo Brasil",
-      precioBase: 2500,
+      tipo: "expreso",
       precio: 5020,
     });
+    expect(res.body[0]).not.toHaveProperty("precioBase");
   });
 });
 

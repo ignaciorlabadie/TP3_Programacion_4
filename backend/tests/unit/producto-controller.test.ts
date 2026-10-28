@@ -25,9 +25,9 @@ describe("serializarProducto", () => {
         descripcion:
           "Acidez media, cuerpo equilibrado y notas cítricas y florales",
       },
-      precioBase: 2500,
       precio: 7360,
     });
+    expect(serializarProducto(expreso)).not.toHaveProperty("precioBase");
   });
 
   it("serializa un filtrado con sus datos de café", () => {
@@ -45,6 +45,7 @@ describe("serializarProducto", () => {
       variedad: { nombre: "Brasil" },
       precio: 4040,
     });
+    expect(serializarProducto(filtrado)).not.toHaveProperty("precioBase");
   });
 
   it("serializa una pastelería sin campos de café", () => {
@@ -54,9 +55,9 @@ describe("serializarProducto", () => {
       id: 19,
       tipo: "pasteleria",
       nombre: "Muffin de chocolate",
-      precioBase: 2500,
       precio: 2500,
     });
+    expect(dto).not.toHaveProperty("precioBase");
     expect(dto).not.toHaveProperty("tamanio");
     expect(dto).not.toHaveProperty("variedad");
   });
