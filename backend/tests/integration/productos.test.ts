@@ -37,4 +37,13 @@ describe("GET /productos/:id", () => {
     expect(res.status).toBe(404);
     expect(res.body).toMatchObject({ error: "Producto no encontrado" });
   });
+
+  it.each(["abc", "1.5"])(
+    "devuelve 400 y un mensaje si el id '%s' no es un entero",
+    async (id) => {
+      const res = await request(app).get(`/productos/${id}`);
+      expect(res.status).toBe(400);
+      expect(res.body).toEqual({ error: "Id inválido" });
+    },
+  );
 });
