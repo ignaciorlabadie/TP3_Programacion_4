@@ -19,6 +19,15 @@ describe("GET /productos", () => {
     });
     expect(res.body[0]).not.toHaveProperty("precioBase");
   });
+
+  it("todos los productos traen tipo válido, precio numérico y sin precioBase", async () => {
+    const res = await request(app).get("/productos");
+    for (const producto of res.body) {
+      expect(["expreso", "filtrado", "pasteleria"]).toContain(producto.tipo);
+      expect(typeof producto.precio).toBe("number");
+      expect(producto).not.toHaveProperty("precioBase");
+    }
+  });
 });
 
 describe("GET /productos/:id", () => {
@@ -46,4 +55,52 @@ describe("GET /productos/:id", () => {
       expect(res.body).toEqual({ error: "Id inválido" });
     },
   );
+
+  it("devuelve un expreso con sus datos completos", async () => {
+    const res = await request(app).get("/productos/5");
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: 5,
+      tipo: "expreso",
+      nombre: "Expreso Mediano Colombia",
+      tamanio: "Mediano",
+      gramosCafe: 27,
+      variedad: {
+        nombre: "Colombia",
+        descripcion:
+          "Acidez media, cuerpo equilibrado y notas cítricas y florales",
+      },
+      precio: 7360,
+    });
+  });
+
+  it("devuelve un filtrado con sus datos de café", async () => {
+    const res = await request(app).get("/productos/10");
+    expect(res.status).toBe(200);
+    expect(res.body).toMatchObject({
+      tipo: "filtrado",
+      tamanio: "Pocillo",
+      gramosCafe: 6,
+      variedad: { nombre: "Brasil" },
+      precio: 4040,
+    });
+  });
+
+  it("devuelve una pastelería sin campos de café", async () => {
+    const res = await request(app).get("/productos/19");
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: 19,
+      tipo: "pasteleria",
+      nombre: "Muffin de chocolate",
+      precio: 2500,
+    });
+  });
+
+  it("los errores responden con { error: string }", async () => {
+    for (const ruta of ["/productos/999", "/productos/abc"]) {
+      const res = await request(app).get(ruta);
+      expect(res.body).toEqual({ error: expect.any(String) });
+    }
+  });
 });
