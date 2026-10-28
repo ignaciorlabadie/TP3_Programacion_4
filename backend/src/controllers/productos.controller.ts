@@ -56,7 +56,13 @@ export function listarProductos(_req: Request, res: Response): void {
 }
 
 export function obtenerProducto(req: Request, res: Response): void {
-  const producto = productoService.obtenerPorId(Number(req.params.id));
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id)) {
+    res.status(400).json({ error: "Id inválido" });
+    return;
+  }
+
+  const producto = productoService.obtenerPorId(id);
   if (!producto) {
     res.status(404).json({ error: "Producto no encontrado" });
     return;
