@@ -16,7 +16,6 @@ export interface ProductoDTOCafe {
   tamanio: Tamano;
   gramosCafe: number;
   variedad: VariedadDTO;
-  precioBase: number;
   precio: number;
 }
 
@@ -24,7 +23,6 @@ export interface ProductoDTOPasteleria {
   id: number;
   tipo: "pasteleria";
   nombre: string;
-  precioBase: number;
   precio: number;
 }
 
@@ -34,7 +32,6 @@ export function serializarProducto(producto: Producto): ProductoDTO {
   const base = {
     id: producto.id,
     nombre: producto.nombre,
-    precioBase: producto.precioBase,
     precio: producto.calcularPrecio(),
   };
 
