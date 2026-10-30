@@ -32,3 +32,28 @@ export function buscarCafe(
       producto.variedad.nombre === origen,
   )
 }
+export interface OrigenDisponible {
+  nombre: Origen
+  descripcion: string
+}
+
+export function origenesDisponibles(
+  productos: readonly Producto[],
+): OrigenDisponible[] {
+  const vistos = new Set<Origen>()
+  const origenes: OrigenDisponible[] = []
+
+  for (const producto of productos) {
+    if (!esCafe(producto) || vistos.has(producto.variedad.nombre)) {
+      continue
+    }
+
+    vistos.add(producto.variedad.nombre)
+    origenes.push({
+      nombre: producto.variedad.nombre,
+      descripcion: producto.variedad.descripcion,
+    })
+  }
+
+  return origenes
+}
