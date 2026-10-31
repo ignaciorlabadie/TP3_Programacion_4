@@ -1,14 +1,17 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { MenuProductos } from '../../components/MenuProductos'
+import type { Producto } from '../../schemas/productoSchema'
 import { server } from '../msw/server'
 
 const urlProductos = 'http://localhost:5173/api/productos'
 
-function renderMenu() {
-  return render(<MenuProductos onAgregar={() => undefined} />)
+function renderMenu(
+  onAgregar: (producto: Producto) => void = () => undefined,
+) {
+  return render(<MenuProductos onAgregar={onAgregar} />)
 }
 
 function responderError(mensaje: string, status = 500) {
@@ -83,5 +86,38 @@ describe('MenuProductos', () => {
     expect(
       await screen.findByRole('heading', { name: 'Café' }),
     ).toBeInTheDocument()
+  })
+
+  it('entrega el café elegido a onAgregar', async () => {
+    const user = userEvent.setup()
+    const onAgregar = vi.fn()
+    renderMenu(onAgregar)
+
+    await user.click(await screen.findByRole('radio', { name: 'Expreso' }))
+    await user.click(screen.getByRole('radio', { name: 'Mediano' }))
+    await user.click(screen.getByRole('radio', { name: 'Colombia' }))
+    await user.click(screen.getByRole('button', { name: 'Agregar' }))
+
+    expect(onAgregar).toHaveBeenCalledTimes(1)
+    expect(onAgregar).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 5, tipo: 'expreso', precio: 7360 }),
+    )
+  })
+
+  it('entrega la pastelería elegida a onAgregar', async () => {
+    const user = userEvent.setup()
+    const onAgregar = vi.fn()
+    renderMenu(onAgregar)
+
+    await user.click(
+      await screen.findByRole('button', {
+        name: 'Agregar Muffin de chocolate',
+      }),
+    )
+
+    expect(onAgregar).toHaveBeenCalledTimes(1)
+    expect(onAgregar).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 19, tipo: 'pasteleria', precio: 2500 }),
+    )
   })
 })
