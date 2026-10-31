@@ -1,0 +1,10 @@
+$primary: #6f4e37;
+$body-bg: #f8f4ef;
+$body-color: #2f2a26;
+$border-radius: 0.5rem;
+
+@import 'bootstrap/scss/bootstrap';
+
+body {
+  min-height: 100vh;
+}
