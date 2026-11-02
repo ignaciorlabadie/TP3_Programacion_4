@@ -96,10 +96,11 @@ La variedad se escribe `Etiopia` (sin tilde) en la API.
 
 ## Pedidos
 
-`POST /pedidos` recibe los items del pedido y responde `201` con el pedido en estado `pendiente` y su total calculado por la API.
+`POST /pedidos` recibe la mesa (opcional) y los items del pedido. La API calcula el total, crea el pedido en estado `pendiente` y responde `201`.
 
 ```json
 {
+  "mesaId": 4,
   "items": [
     { "productoId": 5, "cantidad": 2 },
     { "productoId": 19, "cantidad": 1 }
@@ -107,11 +108,34 @@ La variedad se escribe `Etiopia` (sin tilde) en la API.
 }
 ```
 
-`GET /pedidos/:id` devuelve el pedido con su estado, sus items y su total. Si el pedido no existe responde `404 { "error": "Pedido no encontrado" }`.
+Respuesta `201`:
 
-COMPLETAR: agregar `mesaId` opcional a `POST /pedidos` y devolverlo en el pedido.
+```json
+{
+  "id": 1,
+  "mesaId": 4,
+  "items": [
+    { "productoId": 5, "cantidad": 2 },
+    { "productoId": 19, "cantidad": 1 }
+  ],
+  "estado": "pendiente",
+  "total": 17220
+}
+```
 
-COMPLETAR: documentar el formato final de `GET /pedidos/:id` con estado, items y total para el seguimiento desde el front.
+`mesaId` es opcional y debe ser un entero positivo. Si se omite o se envía `null`, el pedido se crea sin mesa y la clave `mesaId` no aparece en la respuesta. Un `mesaId` inválido responde `400 { "error": "Mesa inválida" }`.
+
+El `estado` que envíe el cliente se ignora: la API siempre crea el pedido en `pendiente`.
+
+`GET /pedidos/:id` devuelve el pedido con su estado, sus items, su total y su mesa (si tiene). Si el pedido no existe responde `404 { "error": "Pedido no encontrado" }`.
+
+**Errores**
+
+- `mesaId` inválido → `400 { "error": "Mesa inválida" }`
+- Pedido sin items → `400 { "error": "El pedido debe tener al menos un item" }`
+- Item inválido → `400 { "error": "Item inválido" }`
+- Cantidad inválida → `400 { "error": "La cantidad debe ser un numero entero mayor a 0" }`
+- Producto inexistente → `400 { "error": "Producto no encontrado" }`
 
 ## Errores
 
@@ -123,14 +147,18 @@ Todas las respuestas de error usan el formato:
 
 Una mesa o un producto inexistente deben responder `400` o `404`, nunca `500`.
 
-## Test helpers (COMPLETAR)
+## Test helpers
 
-Con `NODE_ENV=test` deben existir:
+Con `NODE_ENV=test` la API expone:
 
-- `POST /__test__/reset`
-- `POST /__test__/seed`
+| Método | Endpoint             | Respuesta                                                        |
+| ------ | -------------------- | ---------------------------------------------------------------- |
+| POST   | `/__test__/reset`    | `204` sin body. Limpia los pedidos y reinicia el contador de ids. |
+| POST   | `/__test__/seed`     | `201` con `{ "created": [pedido] }`. Crea el pedido de prueba.    |
 
-COMPLETAR: implementar y documentar ambos endpoints para que los E2E arranquen siempre con los mismos datos.
+El pedido sembrado es el de la mesa 4 con dos expresos medianos de Colombia y un muffin: id `1`, estado `pendiente` y total `17220`. El orden esperado es `reset` y después `seed`, para que los E2E arranquen siempre con los mismos datos.
+
+Fuera de `NODE_ENV=test` los endpoints no existen y responden `404 { "error": "Recurso no encontrado" }` como cualquier ruta inexistente.
 
 ## Integrantes
 
