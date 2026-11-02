@@ -3,6 +3,8 @@ import cors from "cors";
 import productosRouter from "./routes/productos.js";
 import pedidosRouter from "./routes/pedidos.js";
 import reportesRouter from "./routes/reportes.js";
+import { serializarPedido } from "./controllers/pedidos.controller.js";
+import { pedidoService } from "./services/pedido.service.js";
 
 interface ErrorConEstado extends Error {
   status?: number;
@@ -46,6 +48,27 @@ app.use(express.json());
 app.use("/productos", productosRouter);
 app.use("/pedidos", pedidosRouter);
 app.use("/reportes", reportesRouter);
+
+if (process.env.NODE_ENV === "test") {
+  app.post("/__test__/reset", (_req, res) => {
+    pedidoService.clear();
+    res.sendStatus(204);
+  });
+
+  app.post("/__test__/seed", (_req, res) => {
+    const pedido = pedidoService.crearPedido(
+      [
+        { productoId: 5, cantidad: 2 },
+        { productoId: 19, cantidad: 1 },
+      ],
+      undefined,
+      4,
+    );
+    res.status(201).json({
+      created: [serializarPedido(pedido, pedidoService.totalPedido(pedido))],
+    });
+  });
+}
 
 app.get("/", (_req, res) => {
   res.status(200).json({
