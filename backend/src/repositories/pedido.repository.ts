@@ -13,9 +13,14 @@ export class PedidoRepository {
     return this.pedidos.find((pedido) => pedido.id === id);
   }
 
-  crear(items: ItemPedido[], estado: string): Pedido {
-    const pedido = new Pedido(this.nextId++, items, estado);
+  crear(items: ItemPedido[], estado: string, mesaId?: number): Pedido {
+    const pedido = new Pedido(this.nextId++, items, estado, mesaId);
     this.pedidos.push(pedido);
     return pedido;
+  }
+
+  reset(): void {
+    this.pedidos.length = 0;
+    this.nextId = 1;
   }
 }
