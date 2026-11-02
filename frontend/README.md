@@ -1,75 +1,150 @@
-# React + TypeScript + Vite
+# Cafetería Origen - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Menú de mesa para la cafetería Origen. Consume la API del backend y está pensado para usarse desde el celular.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Vite 7 + React 19 + TypeScript (`strict: true`, sin `any`)
+- Bootstrap 5 personalizado con SASS
+- Zod 4 para validar las respuestas de la API
+- Vitest 3 + React Testing Library + user-event + jest-dom
+- MSW 2 para los tests de integración
+- Playwright para los E2E
 
-## React Compiler
+## Requisitos
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js 24 o superior
+- npm
+- La API del backend disponible para desarrollo y E2E
 
-## Expanding the ESLint configuration
+## Instalación
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm ci
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Para los E2E, instalar el navegador de Playwright:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+npx playwright install chromium
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
+## Ejecución
+
+Levantar la API desde `backend/`:
+
+```bash
+cd ../backend
+npm ci
+npm run dev
+```
+
+Luego, desde `frontend/`:
+
+```bash
+npm run dev
+```
+
+El front queda disponible en http://localhost:5173. El proxy de Vite redirige `/api` a `http://localhost:3000`.
+
+## Scripts
+
+| Comando | Descripción |
+| --- | --- |
+| `npm run dev` | Servidor de desarrollo |
+| `npm run build` | Typecheck + build de producción |
+| `npm run preview` | Previsualizar el build |
+| `npm run lint` | ESLint |
+| `npm test` | Unitarios, componentes e integración |
+| `npm run test:watch` | Vitest en modo watch |
+| `npm run test:e2e` | E2E con Playwright |
+
+## Tests
+
+`npm test` corre unitarios, componentes e integración sin necesitar la API levantada. MSW intercepta las llamadas HTTP.
+
+`npm run test:e2e` corre Playwright contra la API real. El `webServer` del config levanta automáticamente el backend (`:3000`) y el front (`:5173`); no hace falta levantarlos a mano. Requiere Chromium instalado.
+
+Niveles:
+
+- `src/test/unit/`: funciones puras (precio, café, orígenes, mesa).
+- `src/test/components/`: componentes con React Testing Library.
+- `src/test/integration/`: cliente HTTP y menú con MSW.
+- `e2e/`: recorridos con Playwright (menú y viewport de 375 px).
+
+## Contrato de la API usado por el front
+
+El front centraliza las llamadas HTTP en `src/api/cliente.ts` y valida cada respuesta con Zod (`src/schemas/`). Los tipos se obtienen con `z.infer`.
+
+### `GET /productos`
+
+Devuelve el menú completo:
+
+```json
+[
   {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
+    "id": 5,
+    "tipo": "expreso",
+    "nombre": "Expreso Mediano Colombia",
+    "tamanio": "Mediano",
+    "gramosCafe": 27,
+    "variedad": {
+      "nombre": "Colombia",
+      "descripcion": "Acidez media, cuerpo equilibrado y notas cítricas y florales"
     },
+    "precio": 7360
   },
-])
+  {
+    "id": 19,
+    "tipo": "pasteleria",
+    "nombre": "Muffin de chocolate",
+    "precio": 2500
+  }
+]
+```
+
+### `GET /productos/:id`
+
+Devuelve un producto con el mismo formato, o un error.
+
+Reglas del contrato:
+
+- `tipo`: `expreso`, `filtrado` o `pasteleria`.
+- `tamanio`: `Pocillo`, `Mediano` o `Taza grande`.
+- `variedad.nombre`: `Brasil`, `Colombia` o `Etiopia` (sin tilde).
+- `precio` viene calculado por la API. El front no calcula precios ni totales.
+- `GET /productos/abc` responde `400 { "error": "Id inválido" }`.
+- `GET /productos/999` responde `404 { "error": "Producto no encontrado" }`.
+
+### Pedidos (COMPLETAR)
+
+COMPLETAR: documentar el contrato de `POST /pedidos` y `GET /pedidos/:id` cuando se integre el carrito (mesaId opcional, items, estado, total y errores).
+
+### Errores
+
+Todas las respuestas de error usan:
+
+```json
+{ "error": "mensaje" }
+```
+
+Si la respuesta no cumple el contrato de Zod, el front muestra un error de contrato.
+
+## Estructura
 
 ```
+src/
+  api/          # cliente HTTP único
+  components/   # SelectorCafe, Pasteleria, MenuProductos, EncabezadoMesa
+  domain/       # reglas puras: café, precios, mesa
+  schemas/      # contratos Zod
+  styles/       # Bootstrap personalizado con SASS
+  test/         # unit, components, integration, MSW
+e2e/            # Playwright
+```
+
+## Pendientes de integración (COMPLETAR)
+
+- COMPLETAR: integrar `leerMesa` y `EncabezadoMesa` en `App.tsx`.
+- COMPLETAR: conectar `onAgregar` con el carrito.
+- COMPLETAR: confirmación, seguimiento y errores del pedido.
