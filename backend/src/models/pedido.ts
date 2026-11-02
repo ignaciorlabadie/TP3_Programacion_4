@@ -5,5 +5,6 @@ export class Pedido {
     public readonly id: number,
     public readonly items: ItemPedido[],
     public readonly estado: string = "pendiente",
+    public readonly mesaId?: number,
   ) {}
 }

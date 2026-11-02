@@ -8,22 +8,45 @@ export class PedidoService {
 
   constructor(private readonly repository: PedidoRepository = new PedidoRepository()) {}
 
-  crearPedido(items: ItemPedido[], estado?: string): Pedido {
+  crearPedido(
+    items: ItemPedido[],
+    estado?: string,
+    mesaId?: number | null,
+  ): Pedido {
     if (!Array.isArray(items) || items.length === 0) {
       throw new Error("El pedido debe tener al menos un item");
     }
     if (estado !== undefined && typeof estado !== "string") {
       throw new Error("El estado debe ser un texto");
     }
-    for (const item of items) {
-      if (!Number.isInteger(item.cantidad) || item.cantidad <= 0) {
+    if (
+      mesaId !== undefined &&
+      mesaId !== null &&
+      (!Number.isSafeInteger(mesaId) || mesaId <= 0)
+    ) {
+      throw new Error("Mesa inválida");
+    }
+    for (const item of items as unknown[]) {
+      if (typeof item !== "object" || item === null) {
+        throw new Error("Item inválido");
+      }
+      const { productoId, cantidad } = item as ItemPedido;
+      if (!Number.isInteger(cantidad) || cantidad <= 0) {
         throw new Error("La cantidad debe ser un numero entero mayor a 0");
       }
-      if (!this.productos.getById(item.productoId)) {
+      if (!this.productos.getById(productoId)) {
         throw new Error("Producto no encontrado");
       }
     }
-    return this.repository.crear(items, estado ?? "pendiente");
+    return this.repository.crear(
+      items,
+      estado ?? "pendiente",
+      mesaId ?? undefined,
+    );
+  }
+
+  clear(): void {
+    this.repository.reset();
   }
 
   listar(): Pedido[] {
