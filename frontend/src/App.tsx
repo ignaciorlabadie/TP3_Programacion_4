@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { MenuProductos } from './components/MenuProductos'
+import { Carrito } from './components/Carrito'
 import { EncabezadoMesa } from './components/EncabezadoMesa'
 import { leerMesa } from '../domain/mesa'
 import { useCarrito } from './context/CarritoContext'
 
 function App() {
   const [mesa, setMesa] = useState<number | null>(null)
-  const { agregar } = useCarrito()
+  const { agregar, items, sumar, restar, quitar, total, estaVacío } = useCarrito()
 
   useEffect(() => {
     setMesa(leerMesa(window.location.search))
@@ -19,6 +20,15 @@ function App() {
         <EncabezadoMesa mesa={mesa} />
       </header>
       <MenuProductos onAgregar={agregar} />
+      <Carrito
+        items={items}
+        onSumar={sumar}
+        onRestar={restar}
+        onQuitar={quitar}
+        total={total}
+        estaVacío={estaVacío}
+        onConfirmar={() => undefined}
+      />
     </main>
   )
 }
