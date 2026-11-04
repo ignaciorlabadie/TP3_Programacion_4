@@ -3,7 +3,6 @@ import {
   carritoReducer,
   calcularSubtotal,
   type ItemCarrito,
-  type AccionCarrito,
 } from '../domain/carrito'
 import type { Producto } from '../schemas/productoSchema'
 
