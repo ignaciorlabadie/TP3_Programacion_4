@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { MenuProductos } from './components/MenuProductos'
 import { Carrito } from './components/Carrito'
 import { EncabezadoMesa } from './components/EncabezadoMesa'
-import { leerMesa } from '../domain/mesa'
+import { leerMesa } from './domain/mesa'
 import { useCarrito } from './context/CarritoContext'
 
 function App() {
