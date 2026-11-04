@@ -24,6 +24,7 @@ function renderCarrito(overrides: Partial<Props> = {}) {
   const onRestar = vi.fn()
   const onQuitar = vi.fn()
   const onConfirmar = vi.fn()
+  const user = userEvent.setup()
 
   const props: Props = {
     items: [],
@@ -37,7 +38,7 @@ function renderCarrito(overrides: Partial<Props> = {}) {
   }
 
   render(<Carrito {...props} />)
-  return { onSumar, onRestar, onQuitar, onConfirmar }
+  return { onSumar, onRestar, onQuitar, onConfirmar, user }
 }
 
 describe('Carrito', () => {
@@ -58,7 +59,11 @@ describe('Carrito', () => {
   })
 
   it('sumar aumenta la cantidad de un producto', async () => {
-    const { onSumar } = renderCarrito({ items, estaVacío: false, total: 17220 })
+    const { onSumar, user } = renderCarrito({
+      items,
+      estaVacío: false,
+      total: 17220,
+    })
 
     await user.click(
       screen.getByRole('button', { name: 'Sumar Expreso Mediano Colombia' })
@@ -67,7 +72,11 @@ describe('Carrito', () => {
   })
 
   it('restar disminuye la cantidad de un producto', async () => {
-    const { onRestar } = renderCarrito({ items, estaVacío: false, total: 17220 })
+    const { onRestar, user } = renderCarrito({
+      items,
+      estaVacío: false,
+      total: 17220,
+    })
 
     await user.click(
       screen.getByRole('button', { name: 'Restar Muffin de chocolate' })
@@ -76,7 +85,11 @@ describe('Carrito', () => {
   })
 
   it('quitar elimina un producto', async () => {
-    const { onQuitar } = renderCarrito({ items, estaVacío: false, total: 17220 })
+    const { onQuitar, user } = renderCarrito({
+      items,
+      estaVacío: false,
+      total: 17220,
+    })
 
     await user.click(
       screen.getByRole('button', { name: 'Quitar Muffin de chocolate' })
