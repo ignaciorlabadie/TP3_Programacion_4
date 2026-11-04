@@ -4,7 +4,7 @@ import { act } from 'react'
 import { CarritoProvider, useCarrito } from '../../context/CarritoContext'
 
 function TestComponent() {
-  const { items, agregar, sumar, restar, quitar, total, estaVacío } = useCarrito()
+  const { items, agregar, total, estaVacío } = useCarrito()
 
   return (
     <div>
@@ -14,7 +14,12 @@ function TestComponent() {
       <button
         data-testid="boton-agregar"
         onClick={() =>
-          agregar({ id: 19, nombre: 'Muffin de chocolate', precio: 2500 })
+          agregar({
+            id: 19,
+            nombre: 'Muffin de chocolate',
+            precio: 2500,
+            tipo: 'pasteleria',
+          })
         }
       >
         Agregar

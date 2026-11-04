@@ -87,7 +87,7 @@ describe('carritoReducer', () => {
   })
 
   it('ignora acciones desconocidas', () => {
-    const accion = { type: 'OTRA' } as AccionCarrito
+    const accion = { type: 'OTRA' } as unknown as AccionCarrito
     const resultado = carritoReducer([muffin], accion)
     expect(resultado).toEqual([muffin])
   })
