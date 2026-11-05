@@ -64,3 +64,21 @@ describe('CarritoContext', () => {
     }).toThrow(/useCarrito debe usarse dentro de un CarritoProvider/)
   })
 })
+
+//vaciar carrito
+it('vacía el carrito mediante el contexto', () => {
+  render(
+    <CarritoProvider>
+      <TestComponent />
+    </CarritoProvider>
+  );
+
+  const botonVaciar = screen.getByTestId('boton-vaciar');
+  act(() => {
+    botonVaciar.click();
+  });
+
+  expect(screen.getByTestId('items-count')).toHaveTextContent('0');
+  expect(screen.getByTestId('total')).toHaveTextContent('0');
+  expect(screen.getByTestId('estaVacío')).toHaveTextContent('true');
+});

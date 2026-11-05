@@ -110,3 +110,20 @@ describe('calcularSubtotal', () => {
     expect(calcularSubtotal(carrito)).toBe(2 * 2500 + 7360)
   })
 })
+
+//vaciar carrito
+it('vacía un carrito con varios items', () => {
+  const carrito: ItemCarrito[] = [muffin, { ...expreso, cantidad: 2 }];
+  const resultado = carritoReducer(carrito, { type: 'VACIAR' });
+  expect(resultado).toEqual([]);
+});
+
+it('no muta el estado original al vaciar', () => {
+  const antes = [...[muffin, expreso]];
+  carritoReducer([muffin, expreso], { type: 'VACIAR' });
+  expect([muffin, expreso]).toEqual(antes);
+});
+
+it('vaciar sobre carrito vacío devuelve vacío', () => {
+  expect(carritoReducer([], { type: 'VACIAR' })).toEqual([]);
+});
