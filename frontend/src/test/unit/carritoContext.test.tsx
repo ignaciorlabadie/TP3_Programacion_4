@@ -4,7 +4,7 @@ import { act } from 'react'
 import { CarritoProvider, useCarrito } from '../../context/CarritoContext'
 
 function TestComponent() {
-  const { items, agregar, total, estaVacío } = useCarrito()
+  const { items, agregar, total, estaVacío, vaciar } = useCarrito()
 
   return (
     <div>
@@ -23,6 +23,12 @@ function TestComponent() {
         }
       >
         Agregar
+      </button>
+      <button
+        data-testid="boton-vaciar"
+        onClick={() => vaciar()}
+      >
+        Vaciar
       </button>
     </div>
   )

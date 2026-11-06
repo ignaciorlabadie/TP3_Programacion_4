@@ -33,11 +33,15 @@ async function leerJson(respuesta: Response): Promise<unknown> {
   }
 }
 
-async function pedir<T>(ruta: string, schema: z.ZodType<T>): Promise<T> {
+async function pedir<T>(
+  ruta: string,
+  schema: z.ZodType<T>,
+  init?: RequestInit,
+): Promise<T> {
   let respuesta: Response
 
   try {
-    respuesta = await fetch(urlApi(ruta))
+    respuesta = await fetch(urlApi(ruta), init)
   } catch {
     throw new ErrorApi('No se pudo conectar con la API', 0)
   }
@@ -64,4 +68,41 @@ async function pedir<T>(ruta: string, schema: z.ZodType<T>): Promise<T> {
 
 export async function getProductos(): Promise<Producto[]> {
   return pedir('/productos', z.array(productoSchema))
+}
+
+// --- Esquemas para pedidos ---
+
+const itemPedidoSchema = z.object({
+  productoId: z.number().int().positive(),
+  cantidad: z.number().int().positive(),
+})
+
+const crearPedidoBodySchema = z.object({
+  items: z.array(itemPedidoSchema).min(1),
+  mesaId: z.number().int().positive().optional(),
+})
+
+const pedidoSchema = z.object({
+  id: z.number().int().positive(),
+  items: z.array(itemPedidoSchema),
+  estado: z.string(),
+  total: z.number().nonnegative(),
+  mesaId: z.number().int().positive().optional(),
+})
+
+export type Pedido = z.infer<typeof pedidoSchema>
+export type CrearPedidoBody = z.infer<typeof crearPedidoBodySchema>
+
+export async function crearPedido(
+  body: CrearPedidoBody,
+): Promise<Pedido> {
+  return pedir('/pedidos', pedidoSchema, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+}
+
+export async function getPedido(id: number): Promise<Pedido> {
+  return pedir(`/pedidos/${id}`, pedidoSchema)
 }

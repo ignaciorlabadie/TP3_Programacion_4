@@ -116,7 +116,7 @@ describe('Carrito', () => {
 it('muestra el subtotal por línea además del subtotal general', () => {
   renderCarrito({ items, estaVacío: false, total: 17220 });
 
-  expect(screen.getByText('$2.500')).toBeInTheDocument();   // muffin 2500 x 1
-  expect(screen.getByText('$14.720')).toBeInTheDocument();  // expreso 7360 x 2
-  expect(screen.getByText('$17.220')).toBeInTheDocument();  // subtotal general
+  expect(screen.getByText('Subtotal: $2.500')).toBeInTheDocument()
+  expect(screen.getByText('Subtotal: $14.720')).toBeInTheDocument()
+  expect(screen.getByText('$17.220')).toBeInTheDocument()
 });
