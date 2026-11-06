@@ -58,6 +58,14 @@ describe('Carrito', () => {
     expect(screen.getByText('Expreso Mediano Colombia')).toBeInTheDocument()
   })
 
+  it('muestra el subtotal por línea además del subtotal general', () => {
+    renderCarrito({ items, estaVacío: false, total: 17220 })
+
+    expect(screen.getByText('Subtotal: $2.500')).toBeInTheDocument()
+    expect(screen.getByText('Subtotal: $14.720')).toBeInTheDocument()
+    expect(screen.getByText('$17.220')).toBeInTheDocument()
+  })
+
   it('sumar aumenta la cantidad de un producto', async () => {
     const { onSumar, user } = renderCarrito({
       items,
@@ -95,12 +103,6 @@ describe('Carrito', () => {
       screen.getByRole('button', { name: 'Quitar Muffin de chocolate' })
     )
     expect(onQuitar).toHaveBeenCalledWith(19)
-  })
-
-  it('muestra el subtotal formateado', () => {
-    renderCarrito({ items, estaVacío: false, total: 17220 })
-
-    expect(screen.getByText('$17.220')).toBeInTheDocument()
   })
 
   it('habilita el botón confirmar cuando hay items', () => {

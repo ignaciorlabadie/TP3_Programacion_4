@@ -9,7 +9,8 @@ export type AccionCarrito =
   | { type: 'AGREGAR'; payload: { productoId: number; nombre: string; precio: number } }
   | { type: 'SUMAR'; payload: { productoId: number } }
   | { type: 'RESTAR'; payload: { productoId: number } }
-  | { type: 'QUITAR'; payload: { productoId: number } };
+  | { type: 'QUITAR'; payload: { productoId: number } }
+  | { type: 'VACIAR' };
 
 export function carritoReducer(state: ItemCarrito[], action: AccionCarrito): ItemCarrito[] {
   switch (action.type) {
@@ -47,6 +48,9 @@ export function carritoReducer(state: ItemCarrito[], action: AccionCarrito): Ite
     case 'QUITAR': {
       return state.filter((item) => item.productoId !== action.payload.productoId);
     }
+
+    case 'VACIAR':
+      return [];
 
     default:
       return state;

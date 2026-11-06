@@ -91,6 +91,24 @@ describe('carritoReducer', () => {
     const resultado = carritoReducer([muffin], accion)
     expect(resultado).toEqual([muffin])
   })
+
+
+  it('vacía un carrito con varios items', () => {
+    const carrito: ItemCarrito[] = [muffin, { ...expreso, cantidad: 2 }]
+    const resultado = carritoReducer(carrito, { type: 'VACIAR' })
+    expect(resultado).toEqual([])
+  })
+
+  it('no muta el estado original al vaciar', () => {
+    const estado: ItemCarrito[] = [muffin, expreso]
+    const antes = [...estado]
+    carritoReducer(estado, { type: 'VACIAR' })
+    expect(estado).toEqual(antes)
+  })
+
+  it('vaciar sobre carrito vacío devuelve vacío', () => {
+    expect(carritoReducer([], { type: 'VACIAR' })).toEqual([])
+  })
 })
 
 describe('calcularSubtotal', () => {

@@ -1,17 +1,60 @@
 import { useEffect, useState } from 'react'
 import { MenuProductos } from './components/MenuProductos'
 import { Carrito } from './components/Carrito'
+import { ConfirmacionPedido } from './components/ConfirmacionPedido'
 import { EncabezadoMesa } from './components/EncabezadoMesa'
+import { crearPedido } from './api/cliente'
 import { leerMesa } from './domain/mesa'
 import { useCarrito } from './context/CarritoContext'
+import type { Pedido } from './api/cliente'
 
 function App() {
   const [mesa, setMesa] = useState<number | null>(null)
-  const { agregar, items, sumar, restar, quitar, total, estaVacío } = useCarrito()
+  const {
+    agregar,
+    items,
+    sumar,
+    restar,
+    quitar,
+    total,
+    estaVacío,
+    vaciar,
+  } = useCarrito()
+  const [pedidoConfirmado, setPedidoConfirmado] = useState<Pedido | null>(null)
+  const [errorConfirmar, setErrorConfirmar] = useState<string | null>(null)
+  const [confirmando, setConfirmando] = useState(false)
 
   useEffect(() => {
     setMesa(leerMesa(window.location.search))
   }, [])
+
+  const onConfirmar = async () => {
+    setErrorConfirmar(null)
+    setConfirmando(true)
+
+    try {
+      const body = {
+        items: items.map((item) => ({
+          productoId: item.productoId,
+          cantidad: item.cantidad,
+        })),
+        ...(mesa ? { mesaId: mesa } : {}),
+      }
+
+      const pedido = await crearPedido(body)
+      setPedidoConfirmado(pedido)
+      vaciar() // solo se ejecuta si salió bien
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setErrorConfirmar(err.message)
+      } else {
+        setErrorConfirmar('Ocurrió un error al confirmar el pedido')
+      }
+      // no se toca el carrito si falla
+    } finally {
+      setConfirmando(false)
+    }
+  }
 
   return (
     <main className="container py-4">
@@ -19,7 +62,9 @@ function App() {
         <h1 className="h3 mb-1">Cafetería Origen</h1>
         <EncabezadoMesa mesa={mesa} />
       </header>
+
       <MenuProductos onAgregar={agregar} />
+
       <Carrito
         items={items}
         onSumar={sumar}
@@ -27,8 +72,22 @@ function App() {
         onQuitar={quitar}
         total={total}
         estaVacío={estaVacío}
-        onConfirmar={() => undefined}
+        onConfirmar={onConfirmar}
       />
+
+      {confirmando && (
+        <p className="text-center my-3">Confirmando pedido...</p>
+      )}
+
+      {errorConfirmar && (
+        <div className="alert alert-danger mb-3" role="alert">
+          {errorConfirmar}
+        </div>
+      )}
+
+      {pedidoConfirmado && (
+        <ConfirmacionPedido pedido={pedidoConfirmado} />
+      )}
     </main>
   )
 }

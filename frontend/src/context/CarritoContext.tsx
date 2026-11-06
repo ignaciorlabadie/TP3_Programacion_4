@@ -12,6 +12,7 @@ type CarritoContextValue = {
   sumar: (productoId: number) => void
   restar: (productoId: number) => void
   quitar: (productoId: number) => void
+  vaciar: () => void
   total: number
   estaVacío: boolean
 }
@@ -44,6 +45,10 @@ export function CarritoProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: 'QUITAR', payload: { productoId } })
   }
 
+  const vaciar = () => {
+    dispatch({ type: 'VACIAR' })
+  }
+
   const total = calcularSubtotal(items)
   const estaVacío = items.length === 0
 
@@ -53,6 +58,7 @@ export function CarritoProvider({ children }: { children: React.ReactNode }) {
     sumar,
     restar,
     quitar,
+    vaciar,
     total,
     estaVacío,
   }
