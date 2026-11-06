@@ -51,6 +51,9 @@ export function Carrito({
               <div className="text-small text-body-secondary">
                 {formatearPrecio(item.precio)} x {item.cantidad}
               </div>
+              <div className="text-small fw-semibold">
+                Subtotal: {formatearPrecio(item.precio * item.cantidad)}
+              </div>
             </div>
             <div className="d-flex align-items-center gap-2">
               <button
@@ -83,7 +86,7 @@ export function Carrito({
         ))}
       </div>
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <span className="fw-semibold">Subtotal</span>
+        <span className="fw-semibold">Subtotal general</span>
         <span className="fw-bold">{formatearPrecio(total)}</span>
       </div>
       <button
