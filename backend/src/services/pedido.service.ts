@@ -2,11 +2,16 @@ import type { ItemPedido } from "../models/itemPedido.js";
 import type { Pedido } from "../models/pedido.js";
 import { PedidoRepository } from "../repositories/pedido.repository.js";
 import { productoRepository } from "../repositories/producto.repository.js";
+import type { RepositorioMesas } from "../repositories/mesa.repository.js";
+import { mesaRepository } from "../repositories/mesa.repository.js";
 
 export class PedidoService {
   private readonly productos = productoRepository;
 
-  constructor(private readonly repository: PedidoRepository = new PedidoRepository()) {}
+  constructor(
+    private readonly repository: PedidoRepository = new PedidoRepository(),
+    private readonly mesas: RepositorioMesas = mesaRepository,
+  ) {}
 
   crearPedido(
     items: ItemPedido[],
@@ -19,12 +24,13 @@ export class PedidoService {
     if (estado !== undefined && typeof estado !== "string") {
       throw new Error("El estado debe ser un texto");
     }
-    if (
-      mesaId !== undefined &&
-      mesaId !== null &&
-      (!Number.isSafeInteger(mesaId) || mesaId <= 0)
-    ) {
-      throw new Error("Mesa inválida");
+    if (mesaId !== undefined && mesaId !== null) {
+      if (!Number.isSafeInteger(mesaId) || mesaId <= 0) {
+        throw new Error("Mesa inválida");
+      }
+      if (!this.mesas.existe(mesaId)) {
+        throw new Error("Mesa inexistente");
+      }
     }
     for (const item of items as unknown[]) {
       if (typeof item !== "object" || item === null) {
@@ -102,6 +108,5 @@ export class PedidoService {
       .filter((pedido) => pedido.estado.trim().toLowerCase() !== "cancelado");
   }
 }
-
 
 export const pedidoService = new PedidoService();
