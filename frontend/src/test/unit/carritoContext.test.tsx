@@ -4,7 +4,7 @@ import { act } from 'react'
 import { CarritoProvider, useCarrito } from '../../context/CarritoContext'
 
 function TestComponent() {
-  const { items, agregar, total, estaVacío } = useCarrito()
+  const { items, agregar, total, estaVacío, vaciar } = useCarrito()
 
   return (
     <div>
@@ -23,6 +23,9 @@ function TestComponent() {
         }
       >
         Agregar
+      </button>
+      <button data-testid="boton-vaciar" onClick={vaciar}>
+        Vaciar
       </button>
     </div>
   )
@@ -56,6 +59,31 @@ describe('CarritoContext', () => {
     expect(screen.getByTestId('items-count')).toHaveTextContent('1')
     expect(screen.getByTestId('total')).toHaveTextContent('2500')
     expect(screen.getByTestId('estaVacío')).toHaveTextContent('false')
+  })
+
+  it('vacía el carrito mediante el contexto', () => {
+    render(
+      <CarritoProvider>
+        <TestComponent />
+      </CarritoProvider>
+    )
+
+    const botonAgregar = screen.getByTestId('boton-agregar')
+    const botonVaciar = screen.getByTestId('boton-vaciar')
+
+    act(() => {
+      botonAgregar.click()
+    })
+
+    expect(screen.getByTestId('items-count')).toHaveTextContent('1')
+
+    act(() => {
+      botonVaciar.click()
+    })
+
+    expect(screen.getByTestId('items-count')).toHaveTextContent('0')
+    expect(screen.getByTestId('total')).toHaveTextContent('0')
+    expect(screen.getByTestId('estaVacío')).toHaveTextContent('true')
   })
 
   it('lanza error si se usa useCarrito fuera del provider', () => {

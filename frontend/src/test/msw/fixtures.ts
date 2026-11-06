@@ -236,3 +236,13 @@ export const productosFixture = [
     precio: 4200,
   },
 ] satisfies Producto[]
+
+export const pedidoFixture = {
+  id: 42,
+  items: [
+    { productoId: 19, cantidad: 1 },
+    { productoId: 5, cantidad: 2 },
+  ],
+  estado: 'pendiente',
+  total: 17220,
+}
