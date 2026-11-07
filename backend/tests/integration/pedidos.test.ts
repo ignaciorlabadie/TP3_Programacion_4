@@ -84,6 +84,24 @@ describe("POST /pedidos", () => {
       expect(res.body).toEqual({ error: "Mesa inválida" });
     },
   );
+
+  it.each([1, 10])("acepta la mesa existente %i", async (mesaId) => {
+    const res = await request(app)
+      .post("/pedidos")
+      .send({ mesaId, items: itemsSeed });
+
+    expect(res.status).toBe(201);
+    expect(res.body.mesaId).toBe(mesaId);
+  });
+
+  it("rechaza una mesa inexistente", async () => {
+    const res = await request(app)
+      .post("/pedidos")
+      .send({ mesaId: 999, items: itemsSeed });
+
+      expect(res.status).toBe(400);
+      expect(res.body).toEqual({ error: "Mesa inexistente" });
+  });
 });
 
 describe("Validación de items", () => {
