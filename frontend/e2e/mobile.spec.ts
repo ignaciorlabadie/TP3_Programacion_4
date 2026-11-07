@@ -1,8 +1,13 @@
 import { expect, test } from '@playwright/test'
+import { reiniciarPedidos } from './helpers'
 
 test.use({ viewport: { width: 375, height: 812 } })
 
 test.describe('Menú en celular', () => {
+  test.beforeEach(async ({ request }) => {
+    await reiniciarPedidos(request)
+  })
+  
   test('no genera scroll horizontal y permite elegir un café', async ({
     page,
   }) => {

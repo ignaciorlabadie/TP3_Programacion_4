@@ -1,6 +1,11 @@
 import { expect, test } from '@playwright/test'
+import { reiniciarPedidos } from './helpers'
 
 test.describe('Menú de productos', () => {
+  test.beforeEach(async ({ request }) => {
+    await reiniciarPedidos(request)
+  })
+
   test('muestra el menú desde la API real y permite elegir un café', async ({
     page,
   }) => {
