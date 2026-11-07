@@ -123,7 +123,7 @@ Respuesta `201`:
 }
 ```
 
-`mesaId` es opcional y debe ser un entero positivo. Si se omite o se envía `null`, el pedido se crea sin mesa y la clave `mesaId` no aparece en la respuesta. Un `mesaId` inválido responde `400 { "error": "Mesa inválida" }`.
+`mesaId` es opcional y debe ser un entero entre 1 y 10. Si se omite o se envía `null`, el pedido se crea sin mesa y la clave `mesaId` no aparece en la respuesta. Un `mesaId` con formato inválido (no entero o menor o igual a 0) responde `400 { "error": "Mesa inválida" }`; una mesa fuera del catálogo responde `400 { "error": "Mesa inexistente" }`.
 
 El `estado` que envíe el cliente se ignora: la API siempre crea el pedido en `pendiente`.
 
@@ -131,7 +131,8 @@ El `estado` que envíe el cliente se ignora: la API siempre crea el pedido en `p
 
 **Errores**
 
-- `mesaId` inválido → `400 { "error": "Mesa inválida" }`
+- `mesaId` con formato inválido → `400 { "error": "Mesa inválida" }`
+- `mesaId` fuera del catálogo (1-10) → `400 { "error": "Mesa inexistente" }`
 - Pedido sin items → `400 { "error": "El pedido debe tener al menos un item" }`
 - Item inválido → `400 { "error": "Item inválido" }`
 - Cantidad inválida → `400 { "error": "La cantidad debe ser un numero entero mayor a 0" }`
