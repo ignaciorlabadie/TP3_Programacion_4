@@ -1,5 +1,10 @@
 import { z } from 'zod'
 import { errorSchema } from '../schemas/error'
+import {
+  pedidoSchema,
+  type CrearPedidoBody,
+  type Pedido,
+} from '../schemas/pedidoSchema'
 import { productoSchema, type Producto } from '../schemas/productoSchema'
 
 const API_URL = '/api'
@@ -69,29 +74,6 @@ async function pedir<T>(
 export async function getProductos(): Promise<Producto[]> {
   return pedir('/productos', z.array(productoSchema))
 }
-
-// --- Esquemas para pedidos ---
-
-const itemPedidoSchema = z.object({
-  productoId: z.number().int().positive(),
-  cantidad: z.number().int().positive(),
-})
-
-const crearPedidoBodySchema = z.object({
-  items: z.array(itemPedidoSchema).min(1),
-  mesaId: z.number().int().positive().optional(),
-})
-
-const pedidoSchema = z.object({
-  id: z.number().int().positive(),
-  items: z.array(itemPedidoSchema),
-  estado: z.string(),
-  total: z.number().nonnegative(),
-  mesaId: z.number().int().positive().optional(),
-})
-
-export type Pedido = z.infer<typeof pedidoSchema>
-export type CrearPedidoBody = z.infer<typeof crearPedidoBodySchema>
 
 export async function crearPedido(
   body: CrearPedidoBody,
