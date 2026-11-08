@@ -21,7 +21,8 @@ export default defineConfig({
       command: 'npm run dev',
       cwd: '../backend',
       url: 'http://localhost:3000/',
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: false,
+      env: { ...(process.env as Record<string, string>), NODE_ENV: 'test' },
       timeout: 120_000,
     },
     {
