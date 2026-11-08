@@ -33,7 +33,7 @@ async function agregarCafe(user: Usuario) {
   await user.click(await screen.findByRole('radio', { name: 'Expreso' }))
   await user.click(screen.getByRole('radio', { name: 'Mediano' }))
   await user.click(screen.getByRole('radio', { name: 'Colombia' }))
-  await user.click(screen.getByRole('button', { name: 'Agregar', exact: true }))
+  await user.click(screen.getByRole('button', { name: 'Agregar' }))
 }
 
 async function agregarMuffin(user: Usuario) {
