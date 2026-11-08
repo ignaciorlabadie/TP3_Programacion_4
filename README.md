@@ -81,13 +81,6 @@ Los E2E levantan la API y el front automáticamente mediante el `webServer` de P
 - [Contrato y endpoints del backend](./backend/README.md)
 - [Contrato que consume el frontend](./frontend/README.md)
 
-## Pendientes de integración (COMPLETAR)
-
-- COMPLETAR: integrar `leerMesa` y `EncabezadoMesa` en `App.tsx`.
-- COMPLETAR: carrito, confirmación y seguimiento del pedido.
-- COMPLETAR: `mesaId` en `POST /pedidos` y endpoints de test (`/__test__/reset`, `/__test__/seed`).
-- COMPLETAR: E2E del recorrido completo con reset y seed.
-
 ## Integrantes
 
 - Franco, Adrián Emmanuel
