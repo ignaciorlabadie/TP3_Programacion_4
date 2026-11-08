@@ -38,6 +38,8 @@ npm start
 npm test
 ```
 
+El test de CORS es de regresión: documenta cabeceras que ya estaban implementadas y no forma parte de un ciclo rojo-verde.
+
 Para el reporte de cobertura:
 
 ```bash
