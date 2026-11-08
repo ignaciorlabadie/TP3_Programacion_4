@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { reiniciarPedidos } from './helpers'
+import { reiniciarPedidos } from './helpers.ts'
 
 test.describe('Menú de productos', () => {
   test.beforeEach(async ({ request }) => {
