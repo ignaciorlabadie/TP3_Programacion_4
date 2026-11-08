@@ -6,7 +6,7 @@ import { EncabezadoMesa } from './components/EncabezadoMesa'
 import { crearPedido } from './api/cliente'
 import { crearCuerpoPedido } from './domain/pedido'
 import { leerMesa } from './domain/mesa'
-import { useCarrito } from './context/CarritoContext'
+import { useCarrito } from './context/useCarrito'
 import type { Pedido } from './api/cliente'
 
 function App() {
