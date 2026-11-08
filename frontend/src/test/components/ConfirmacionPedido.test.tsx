@@ -41,6 +41,26 @@ describe('ConfirmacionPedido', () => {
     expect(screen.getByText('$17.220')).toBeInTheDocument()
   })
 
+  it('muestra el pedido nuevo si se confirma otro pedido', () => {
+    const { rerender } = render(<ConfirmacionPedido pedido={pedidoFixture} />)
+
+    expect(screen.getByText('42')).toBeInTheDocument()
+
+    const segundoPedido = {
+      ...pedidoFixture,
+      id: 43,
+      estado: 'en preparación',
+      total: 20000,
+    }
+
+    rerender(<ConfirmacionPedido pedido={segundoPedido} />)
+
+    expect(screen.getByText('43')).toBeInTheDocument()
+    expect(screen.getByText('en preparación')).toBeInTheDocument()
+    expect(screen.getByText('$20.000')).toBeInTheDocument()
+    expect(screen.queryByText('42')).not.toBeInTheDocument()
+  })
+
   it('actualiza el estado sin recargar la página', async () => {
     const user = userEvent.setup()
 

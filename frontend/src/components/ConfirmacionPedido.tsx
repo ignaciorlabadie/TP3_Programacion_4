@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ErrorApi, getPedido } from '../api/cliente'
+import { getPedido } from '../api/cliente'
 import type { Pedido } from '../api/cliente'
 import { formatearPrecio } from '../domain/precio'
 
@@ -7,27 +7,40 @@ type Props = {
   pedido: Pedido
 }
 
+type ConsultaPedido = {
+  id: number
+  pedido?: Pedido
+  error?: string
+}
+
 export function ConfirmacionPedido({ pedido: pedidoInicial }: Props) {
-  const [pedido, setPedido] = useState(pedidoInicial)
-  const [error, setError] = useState<string | null>(null)
+  const [consulta, setConsulta] = useState<ConsultaPedido | null>(null)
   const [actualizando, setActualizando] = useState(false)
 
+  const consultaActual = consulta?.id === pedidoInicial.id ? consulta : null
+  const pedido = consultaActual?.pedido ?? pedidoInicial
+  const error = consultaActual?.error ?? null
+
   const actualizarEstado = async () => {
-    setError(null)
+    const id = pedidoInicial.id
     setActualizando(true)
+    setConsulta((actual) =>
+      actual?.id === id ? { ...actual, error: undefined } : { id }
+    )
 
     try {
-      const actualizado = await getPedido(pedido.id)
-      setPedido(actualizado)
+      const actualizado = await getPedido(id)
+      setConsulta({ id, pedido: actualizado })
     } catch (err: unknown) {
-      if (err instanceof ErrorApi) {
-        setError(err.message)
-      } else if (err instanceof Error) {
-        setError(err.message)
-      } else {
-        setError('No se pudo actualizar el estado del pedido')
-      }
-      // se conservan los datos anteriores de `pedido`
+      const mensaje =
+        err instanceof Error
+          ? err.message
+          : 'No se pudo actualizar el estado del pedido'
+      setConsulta((actual) =>
+        actual?.id === id
+          ? { ...actual, error: mensaje }
+          : { id, error: mensaje }
+      )
     } finally {
       setActualizando(false)
     }
