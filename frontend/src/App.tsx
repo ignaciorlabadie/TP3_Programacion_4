@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { MenuProductos } from './components/MenuProductos'
 import { Carrito } from './components/Carrito'
 import { ConfirmacionPedido } from './components/ConfirmacionPedido'
@@ -10,7 +10,7 @@ import { useCarrito } from './context/useCarrito'
 import type { Pedido } from './api/cliente'
 
 function App() {
-  const [mesa, setMesa] = useState<number | null>(null)
+  const [mesa] = useState<number | null>(() => leerMesa(window.location.search))
   const {
     agregar,
     items,
@@ -24,10 +24,6 @@ function App() {
   const [pedidoConfirmado, setPedidoConfirmado] = useState<Pedido | null>(null)
   const [errorConfirmar, setErrorConfirmar] = useState<string | null>(null)
   const [confirmando, setConfirmando] = useState(false)
-
-  useEffect(() => {
-    setMesa(leerMesa(window.location.search))
-  }, [])
 
   const onConfirmar = async () => {
     setErrorConfirmar(null)
