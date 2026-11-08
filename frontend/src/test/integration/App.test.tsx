@@ -62,6 +62,7 @@ describe('App', () => {
 
   afterEach(() => {
     server.resetHandlers()
+    window.history.replaceState({}, '', '/')
   })
 
   it('renderiza el encabezado de mesa por defecto', () => {
@@ -73,6 +74,34 @@ describe('App', () => {
 
     expect(screen.getByText('Retirar en la barra')).toBeInTheDocument()
   })
+
+  it('muestra la mesa del QR cuando está dentro del catálogo', () => {
+    window.history.replaceState({}, '', '/?mesa=4')
+
+    render(
+      <CarritoProvider>
+        <App />
+      </CarritoProvider>
+    )
+
+    expect(screen.getByText('Mesa 4')).toBeInTheDocument()
+  })
+
+  it.each(['11', '999'])(
+    'trata ?mesa=%s como retiro en la barra',
+    (mesa) => {
+      window.history.replaceState({}, '', `/?mesa=${mesa}`)
+
+      render(
+        <CarritoProvider>
+          <App />
+        </CarritoProvider>
+      )
+
+      expect(screen.getByText('Retirar en la barra')).toBeInTheDocument()
+      expect(screen.queryByText(/Mesa \d/)).not.toBeInTheDocument()
+    }
+  )
 
   it('renderiza el componente Carrito vacío por defecto', () => {
     render(

@@ -3,8 +3,9 @@ import { leerMesa } from '../../domain/mesa'
 
 describe('leerMesa', () => {
   it.each([
+    ['?mesa=1', 1],
     ['?mesa=4', 4],
-    ['?mesa=12', 12],
+    ['?mesa=10', 10],
     ['?otro=1&mesa=7', 7],
     ['?mesa=04', 4],
   ])('lee la mesa válida de "%s"', (search, esperado) => {
@@ -22,6 +23,9 @@ describe('leerMesa', () => {
     '?mesa=4abc',
     '?mesa=4&mesa=5',
     '?otro=1',
+    '?mesa=11',
+    '?mesa=12',
+    '?mesa=999',
   ])('devuelve null para "%s"', (search) => {
     expect(leerMesa(search)).toBeNull()
   })
