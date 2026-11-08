@@ -69,8 +69,8 @@ Niveles:
 
 - `src/test/unit/`: funciones puras (precio, café, orígenes, mesa).
 - `src/test/components/`: componentes con React Testing Library.
-- `src/test/integration/`: cliente HTTP y menú con MSW.
-- `e2e/`: recorridos con Playwright (menú y viewport de 375 px).
+- `src/test/integration/`: cliente HTTP, menú y confirmación del pedido con MSW.
+- `e2e/`: recorridos con Playwright (menú, pedido completo y viewport de 375 px).
 
 ## Contrato de la API usado por el front
 
@@ -112,13 +112,52 @@ Reglas del contrato:
 - `tipo`: `expreso`, `filtrado` o `pasteleria`.
 - `tamanio`: `Pocillo`, `Mediano` o `Taza grande`.
 - `variedad.nombre`: `Brasil`, `Colombia` o `Etiopia` (sin tilde).
-- `precio` viene calculado por la API. El front no calcula precios ni totales.
+- `precio` viene calculado por la API. El front no calcula precios ni el total del pedido; el subtotal del carrito es solo orientativo.
 - `GET /productos/abc` responde `400 { "error": "Id inválido" }`.
 - `GET /productos/999` responde `404 { "error": "Producto no encontrado" }`.
 
-### Pedidos (COMPLETAR)
+### Mesa desde el QR
 
-COMPLETAR: documentar el contrato de `POST /pedidos` y `GET /pedidos/:id` cuando se integre el carrito (mesaId opcional, items, estado, total y errores).
+El menú se abre con `?mesa=N`. El valor debe ser un entero entre 1 y 10:
+
+- `/?mesa=4` → muestra `Mesa 4`.
+- Sin `?mesa`, con un formato inválido o fuera del catálogo (por ejemplo `/?mesa=999`) → muestra `Retirar en la barra` y no envía `mesaId`.
+
+### `POST /pedidos`
+
+Crea el pedido con la mesa (opcional) y los items del carrito:
+
+```json
+{
+  "mesaId": 4,
+  "items": [
+    { "productoId": 5, "cantidad": 2 },
+    { "productoId": 19, "cantidad": 1 }
+  ]
+}
+```
+
+- `mesaId` es opcional: se omite cuando el pedido es para retirar en la barra.
+- El front no calcula precios ni el total: los toma de la respuesta.
+
+Respuesta `201`:
+
+```json
+{
+  "id": 1,
+  "mesaId": 4,
+  "items": [
+    { "productoId": 5, "cantidad": 2 },
+    { "productoId": 19, "cantidad": 1 }
+  ],
+  "estado": "pendiente",
+  "total": 17220
+}
+```
+
+### `GET /pedidos/:id`
+
+Devuelve el pedido con el mismo formato que `POST /pedidos`. Se usa para el seguimiento sin recargar la página. Si el pedido no existe responde `404 { "error": "Pedido no encontrado" }`.
 
 ### Errores
 
@@ -135,16 +174,11 @@ Si la respuesta no cumple el contrato de Zod, el front muestra un error de contr
 ```
 src/
   api/          # cliente HTTP único
-  components/   # SelectorCafe, Pasteleria, MenuProductos, EncabezadoMesa
-  domain/       # reglas puras: café, precios, mesa
-  schemas/      # contratos Zod
+  components/   # SelectorCafe, Pasteleria, MenuProductos, EncabezadoMesa, Carrito, ConfirmacionPedido
+  context/      # CarritoContext con useReducer
+  domain/       # reglas puras: café, precios, mesa, carrito y armado del pedido
+  schemas/      # contratos Zod (productos y pedidos)
   styles/       # Bootstrap personalizado con SASS
   test/         # unit, components, integration, MSW
 e2e/            # Playwright
 ```
-
-## Pendientes de integración (COMPLETAR)
-
-- COMPLETAR: integrar `leerMesa` y `EncabezadoMesa` en `App.tsx`.
-- COMPLETAR: conectar `onAgregar` con el carrito.
-- COMPLETAR: confirmación, seguimiento y errores del pedido.
