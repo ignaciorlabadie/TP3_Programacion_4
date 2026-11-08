@@ -1,23 +1,12 @@
-import { createContext, useContext, useReducer } from 'react'
+import { useReducer } from 'react'
 import {
   carritoReducer,
   calcularSubtotal,
   type ItemCarrito,
 } from '../domain/carrito'
+import { CarritoContext } from './useCarrito'
+import type { CarritoContextValue } from './useCarrito'
 import type { Producto } from '../schemas/productoSchema'
-
-type CarritoContextValue = {
-  items: ItemCarrito[]
-  agregar: (producto: Producto) => void
-  sumar: (productoId: number) => void
-  restar: (productoId: number) => void
-  quitar: (productoId: number) => void
-  vaciar: () => void
-  total: number
-  estaVacío: boolean
-}
-
-const CarritoContext = createContext<CarritoContextValue | undefined>(undefined)
 
 export function CarritoProvider({ children }: { children: React.ReactNode }) {
   const [items, dispatch] = useReducer(carritoReducer, [] as ItemCarrito[])
@@ -64,12 +53,4 @@ export function CarritoProvider({ children }: { children: React.ReactNode }) {
   }
 
   return <CarritoContext.Provider value={value}>{children}</CarritoContext.Provider>
-}
-
-export function useCarrito() {
-  const contexto = useContext(CarritoContext)
-  if (!contexto) {
-    throw new Error('useCarrito debe usarse dentro de un CarritoProvider')
-  }
-  return contexto
 }

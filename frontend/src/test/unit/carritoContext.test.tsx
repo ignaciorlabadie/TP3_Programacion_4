@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { act } from 'react'
-import { CarritoProvider, useCarrito } from '../../context/CarritoContext'
+import { CarritoProvider } from '../../context/CarritoContext'
+import { useCarrito } from '../../context/useCarrito'
 
 function TestComponent() {
   const { items, agregar, total, estaVacío, vaciar } = useCarrito()

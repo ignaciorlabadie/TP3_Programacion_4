@@ -7,6 +7,8 @@ import {
 } from '../schemas/pedidoSchema'
 import { productoSchema, type Producto } from '../schemas/productoSchema'
 
+export type { CrearPedidoBody, Pedido } from '../schemas/pedidoSchema'
+
 const API_URL = '/api'
 
 export class ErrorApi extends Error {
