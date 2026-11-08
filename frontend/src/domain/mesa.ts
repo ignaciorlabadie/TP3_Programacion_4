@@ -1,5 +1,8 @@
 const PATRON_MESA = /^\d+$/
 
+export const MESA_MIN = 1
+export const MESA_MAX = 10
+
 export function leerMesa(search: string): number | null {
   const valores = new URLSearchParams(search).getAll('mesa')
 
@@ -15,5 +18,9 @@ export function leerMesa(search: string): number | null {
 
   const mesa = Number(valor)
 
-  return Number.isSafeInteger(mesa) && mesa > 0 ? mesa : null
+  if (!Number.isSafeInteger(mesa)) {
+    return null
+  }
+
+  return mesa >= MESA_MIN && mesa <= MESA_MAX ? mesa : null
 }
