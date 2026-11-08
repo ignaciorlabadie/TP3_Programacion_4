@@ -4,6 +4,7 @@ import { Carrito } from './components/Carrito'
 import { ConfirmacionPedido } from './components/ConfirmacionPedido'
 import { EncabezadoMesa } from './components/EncabezadoMesa'
 import { crearPedido } from './api/cliente'
+import { crearCuerpoPedido } from './domain/pedido'
 import { leerMesa } from './domain/mesa'
 import { useCarrito } from './context/CarritoContext'
 import type { Pedido } from './api/cliente'
@@ -33,15 +34,7 @@ function App() {
     setConfirmando(true)
 
     try {
-      const body = {
-        items: items.map((item) => ({
-          productoId: item.productoId,
-          cantidad: item.cantidad,
-        })),
-        ...(mesa ? { mesaId: mesa } : {}),
-      }
-
-      const pedido = await crearPedido(body)
+      const pedido = await crearPedido(crearCuerpoPedido(items, mesa))
       setPedidoConfirmado(pedido)
       vaciar() // solo se ejecuta si salió bien
     } catch (err: unknown) {
