@@ -65,12 +65,14 @@ El front queda disponible en http://localhost:5173. El proxy de Vite redirige `/
 
 `npm run test:e2e` corre Playwright contra la API real. El `webServer` del config levanta automáticamente el backend (`:3000`) y el front (`:5173`); no hace falta levantarlos a mano. Requiere Chromium instalado.
 
-Niveles:
+### Niveles:
 
 - `src/test/unit/`: funciones puras (precio, café, orígenes, mesa).
 - `src/test/components/`: componentes con React Testing Library.
 - `src/test/integration/`: cliente HTTP, menú y confirmación del pedido con MSW.
 - `e2e/`: recorridos con Playwright (menú, pedido completo y viewport de 375 px).
+
+**Nota:** Los tests de 500, API caída y seguimiento en `confirmarPedido.test.tsx` son de **regresión**: documentan comportamiento ya implementado y no forman parte de un ciclo rojo-verde.
 
 ## Contrato de la API usado por el front
 

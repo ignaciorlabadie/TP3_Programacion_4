@@ -79,6 +79,9 @@ describe('Confirmar pedido', () => {
     await user.click(screen.getByRole('button', { name: 'Confirmar pedido' }))
 
     expect(await screen.findByText('42')).toBeInTheDocument()
+    expect(screen.getByText('pendiente')).toBeInTheDocument()
+    expect(screen.getByText('$17.220')).toBeInTheDocument()
+    expect(screen.getByText('El carrito está vacío')).toBeInTheDocument()
     expect(captura.cuerpo).toEqual({
       mesaId: 4,
       items: [
@@ -139,5 +142,72 @@ describe('Confirmar pedido', () => {
       await screen.findByText('La respuesta de la API no cumple el contrato')
     ).toBeInTheDocument()
     expect(screen.queryByText('El carrito está vacío')).not.toBeInTheDocument()
+  })
+
+  it('reintenta después de un 500 y confirma el pedido', async () => {
+    let intentos = 0
+
+    server.use(
+      http.post(urlPedidos, () => {
+        intentos += 1
+        if (intentos === 1) {
+          return HttpResponse.json(
+            { error: 'Fallo el servidor' },
+            { status: 500 }
+          )
+        }
+        return HttpResponse.json(pedidoExitoso, { status: 201 })
+      })
+    )
+
+    renderApp()
+    await agregarCafe(user)
+
+    await user.click(screen.getByRole('button', { name: 'Confirmar pedido' }))
+
+    expect(await screen.findByText('Fallo el servidor')).toBeInTheDocument()
+    expect(screen.queryByText('El carrito está vacío')).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Confirmar pedido' }))
+
+    expect(await screen.findByText('42')).toBeInTheDocument()
+    expect(screen.getByText('El carrito está vacío')).toBeInTheDocument()
+  })
+
+  it('muestra un error si la API está caída y conserva el carrito', async () => {
+    server.use(http.post(urlPedidos, () => HttpResponse.error()))
+
+    renderApp()
+    await agregarCafe(user)
+
+    await user.click(screen.getByRole('button', { name: 'Confirmar pedido' }))
+
+    expect(
+      await screen.findByText('No se pudo conectar con la API')
+    ).toBeInTheDocument()
+    expect(screen.queryByText('El carrito está vacío')).not.toBeInTheDocument()
+  })
+
+  it('actualiza el estado del pedido sin recargar', async () => {
+    server.use(
+      http.post(urlPedidos, () =>
+        HttpResponse.json(pedidoExitoso, { status: 201 })
+      ),
+      http.get(`${urlPedidos}/42`, () =>
+        HttpResponse.json({ ...pedidoExitoso, estado: 'entregado' })
+      )
+    )
+
+    renderApp()
+    await agregarCafe(user)
+
+    await user.click(screen.getByRole('button', { name: 'Confirmar pedido' }))
+
+    expect(await screen.findByText('pendiente')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Actualizar estado' }))
+
+    expect(await screen.findByText('entregado')).toBeInTheDocument()
+    expect(screen.getByText('$17.220')).toBeInTheDocument()
   })
 })
