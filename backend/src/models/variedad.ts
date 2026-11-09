@@ -13,3 +13,14 @@ const PRECIO_POR_GRAMO: Record<Variedad, number> = {
 export function precioPorGramo(variedad: Variedad): number {
   return PRECIO_POR_GRAMO[variedad];
 }
+
+const DESCRIPCION: Record<Variedad, string> = {
+  [Variedad.BRASIL]: "Acidez baja, cuerpo cremoso y notas a chocolate y nuez",
+  [Variedad.COLOMBIA]:
+    "Acidez media, cuerpo equilibrado y notas cítricas y florales",
+  [Variedad.ETIOPIA]: "Acidez alta, cuerpo ligero y notas florales y frutales",
+};
+
+export function descripcionVariedad(variedad: Variedad): string {
+  return DESCRIPCION[variedad];
+}
