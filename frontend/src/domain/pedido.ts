@@ -1,8 +1,7 @@
-import type { CrearPedidoBody } from '../api/cliente'
-import type { ItemCarrito } from './carrito'
+import type { CrearPedidoBody, ItemPedido } from '../schemas/pedidoSchema'
 
 export function crearCuerpoPedido(
-  items: readonly ItemCarrito[],
+  items: readonly ItemPedido[],
   mesa: number | null,
 ): CrearPedidoBody {
   return {

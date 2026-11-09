@@ -2,10 +2,11 @@ import { z } from 'zod'
 import { errorSchema } from '../schemas/error'
 import {
   pedidoSchema,
-  type CrearPedidoBody,
+  type ItemPedido,
   type Pedido,
 } from '../schemas/pedidoSchema'
 import { productoSchema, type Producto } from '../schemas/productoSchema'
+import { crearCuerpoPedido } from '../domain/pedido'
 
 export type { CrearPedidoBody, Pedido } from '../schemas/pedidoSchema'
 
@@ -78,12 +79,13 @@ export async function getProductos(): Promise<Producto[]> {
 }
 
 export async function crearPedido(
-  body: CrearPedidoBody,
+  mesaId: number | null,
+  items: readonly ItemPedido[],
 ): Promise<Pedido> {
   return pedir('/pedidos', pedidoSchema, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
+    body: JSON.stringify(crearCuerpoPedido(items, mesaId)),
   })
 }
 
